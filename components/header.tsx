@@ -9,7 +9,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   
-  const mainSiteUrl = "hynox-lake.vercel.app"; 
+  const mainSiteUrl = "https://campus.hynox.in/"; 
   
   useEffect(() => {
     const handleScroll = () => {
