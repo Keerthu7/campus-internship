@@ -9,7 +9,8 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   
-  const mainSiteUrl = "https://campus.hynox.in/";
+  // Last-la irukka slash '/' ah remove panniten, illaina double slash aagidum links-la
+  const mainSiteUrl = "https://hynox-lake.vercel.app";
   
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +30,7 @@ export default function Header() {
     if (item === "About") return `${mainSiteUrl}/about`;
     if (item === "Programs") return `${mainSiteUrl}/programs`;
     if (item === "Contact") return `${mainSiteUrl}/contact`;
-    if (item === "Internship") return "/"; // Internship site la internship click panna ithe page la irukkum
+    if (item === "Internship") return "/"; // Internship site-laye irukkum
     return `/${item.toLowerCase()}`;
   };
 
@@ -38,7 +39,7 @@ export default function Header() {
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled
           ? "bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-200"
-          : "bg-white" // <-- bg-transparent ah bg-white nu mathiyachu
+          : "bg-white" 
       }`}
     >
       <div className="container mx-auto px-4 py-3">
@@ -56,7 +57,6 @@ export default function Header() {
               />
             </div>
             
-            {/* Hynox Campus Text */}
             <div className="flex flex-col justify-center">
               <span className="font-black text-sm text-black leading-none tracking-tighter uppercase">
                 Hynox
