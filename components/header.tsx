@@ -9,6 +9,8 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   
+  const mainSiteUrl = "hynox-lake.vercel.app"; 
+  
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -23,9 +25,11 @@ export default function Header() {
   }, []);
 
   const getPath = (item: string) => {
-    if (item === "Home") return "/";
-    if (item === "Programs") return "/programs";
-    if (item === "Internship") return "/"; // Internship site la irunthu Internship click panna athu same page la thaan irukkanum
+    if (item === "Home") return mainSiteUrl;
+    if (item === "About") return `${mainSiteUrl}/about`;
+    if (item === "Programs") return `${mainSiteUrl}/programs`;
+    if (item === "Contact") return `${mainSiteUrl}/contact`;
+    if (item === "Internship") return "/"; // Internship click panna ithe page la irukkum
     return `/${item.toLowerCase()}`;
   };
 
@@ -40,7 +44,7 @@ export default function Header() {
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           
-          <Link href="/" className="flex items-center gap-3 group ml-8 md:ml-16">
+          <Link href={mainSiteUrl} className="flex items-center gap-3 group ml-8 md:ml-16">
             <div className="flex-shrink-0 flex items-center">
               <Image 
                 src="/logo.png"  
@@ -52,7 +56,6 @@ export default function Header() {
               />
             </div>
             
-            {/* Hynox Campus Text - text-black ah text-white nu mathiyachu */}
             <div className="flex flex-col justify-center">
               <span className="font-black text-sm text-white leading-none tracking-tighter uppercase">
                 Hynox
@@ -63,13 +66,13 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Desktop Navigation - text-black ah text-white nu mathiyachu */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link href="/" className="text-sm font-medium text-white hover:text-[#00C365] transition-colors">Home</Link>
-            <Link href="/about" className="text-sm font-medium text-white hover:text-[#00C365] transition-colors">About</Link>
-            <Link href="/programs" className="text-sm font-medium text-white hover:text-[#00C365] transition-colors">Programs</Link>
-            <Link href="/" className="text-sm font-medium text-white hover:text-[#00C365] transition-colors">Internship</Link>
-            <Link href="/contact" className="text-sm font-medium text-white hover:text-[#00C365] transition-colors">Contact</Link>
+            <Link href={mainSiteUrl} className="text-sm font-medium text-white hover:text-[#00C365] transition-colors">Home</Link>
+            <Link href={`${mainSiteUrl}/about`} className="text-sm font-medium text-white hover:text-[#00C365] transition-colors">About</Link>
+            <Link href={`${mainSiteUrl}/programs`} className="text-sm font-medium text-white hover:text-[#00C365] transition-colors">Programs</Link>
+            <Link href="/" className="text-sm font-medium text-[#00C365] transition-colors">Internship</Link>
+            <Link href={`${mainSiteUrl}/contact`} className="text-sm font-medium text-white hover:text-[#00C365] transition-colors">Contact</Link>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -82,7 +85,7 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mobile Navigation - Background ah dark aakiyachu */}
+        {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 pb-6 border-t border-gray-800 bg-black/95 backdrop-blur-xl rounded-b-3xl absolute left-0 w-full px-6 shadow-2xl animate-in slide-in-from-top duration-300">
             <nav className="flex flex-col gap-4 py-6">
@@ -91,7 +94,9 @@ export default function Header() {
                   key={item}
                   href={getPath(item)}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-lg font-bold text-white hover:text-[#00C365] transition-colors border-b border-gray-800 pb-2"
+                  className={`text-lg font-bold hover:text-[#00C365] transition-colors border-b border-gray-800 pb-2 ${
+                    item === "Internship" ? "text-[#00C365]" : "text-white"
+                  }`}
                 >
                   {item}
                 </Link>
