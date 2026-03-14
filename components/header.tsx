@@ -9,7 +9,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   
-  const mainSiteUrl = "https://campus.hynox.in/"; 
+  const mainSiteUrl = "https://campus.hynox.in/";
   
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +29,7 @@ export default function Header() {
     if (item === "About") return `${mainSiteUrl}/about`;
     if (item === "Programs") return `${mainSiteUrl}/programs`;
     if (item === "Contact") return `${mainSiteUrl}/contact`;
-    if (item === "Internship") return "/"; // Internship click panna ithe page la irukkum
+    if (item === "Internship") return "/"; // Internship site la internship click panna ithe page la irukkum
     return `/${item.toLowerCase()}`;
   };
 
@@ -37,8 +37,8 @@ export default function Header() {
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-black/80 backdrop-blur-md shadow-sm border-b border-gray-800"
-          : "bg-transparent"
+          ? "bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-200"
+          : "bg-white" // <-- bg-transparent ah bg-white nu mathiyachu
       }`}
     >
       <div className="container mx-auto px-4 py-3">
@@ -56,8 +56,9 @@ export default function Header() {
               />
             </div>
             
+            {/* Hynox Campus Text */}
             <div className="flex flex-col justify-center">
-              <span className="font-black text-sm text-white leading-none tracking-tighter uppercase">
+              <span className="font-black text-sm text-black leading-none tracking-tighter uppercase">
                 Hynox
               </span> 
               <span className="text-[7px] font-bold uppercase tracking-[0.35em] text-[#00C365] mt-0.5 pl-0.5">
@@ -68,17 +69,17 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link href={mainSiteUrl} className="text-sm font-medium text-white hover:text-[#00C365] transition-colors">Home</Link>
-            <Link href={`${mainSiteUrl}/about`} className="text-sm font-medium text-white hover:text-[#00C365] transition-colors">About</Link>
-            <Link href={`${mainSiteUrl}/programs`} className="text-sm font-medium text-white hover:text-[#00C365] transition-colors">Programs</Link>
+            <Link href={mainSiteUrl} className="text-sm font-medium text-black hover:text-[#00C365] transition-colors">Home</Link>
+            <Link href={`${mainSiteUrl}/about`} className="text-sm font-medium text-black hover:text-[#00C365] transition-colors">About</Link>
+            <Link href={`${mainSiteUrl}/programs`} className="text-sm font-medium text-black hover:text-[#00C365] transition-colors">Programs</Link>
             <Link href="/" className="text-sm font-medium text-[#00C365] transition-colors">Internship</Link>
-            <Link href={`${mainSiteUrl}/contact`} className="text-sm font-medium text-white hover:text-[#00C365] transition-colors">Contact</Link>
+            <Link href={`${mainSiteUrl}/contact`} className="text-sm font-medium text-black hover:text-[#00C365] transition-colors">Contact</Link>
           </nav>
 
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
-              className="md:hidden text-white hover:text-[#00C365] transition-colors"
+              className="md:hidden text-black hover:text-[#00C365] transition-colors"
             >
               {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -87,15 +88,15 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-6 border-t border-gray-800 bg-black/95 backdrop-blur-xl rounded-b-3xl absolute left-0 w-full px-6 shadow-2xl animate-in slide-in-from-top duration-300">
+          <div className="md:hidden mt-4 pb-6 border-t border-gray-200 bg-white/95 backdrop-blur-xl rounded-b-3xl absolute left-0 w-full px-6 shadow-2xl animate-in slide-in-from-top duration-300">
             <nav className="flex flex-col gap-4 py-6">
               {["Home", "About", "Programs", "Internship", "Contact"].map((item) => (
                 <Link
                   key={item}
                   href={getPath(item)}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`text-lg font-bold hover:text-[#00C365] transition-colors border-b border-gray-800 pb-2 ${
-                    item === "Internship" ? "text-[#00C365]" : "text-white"
+                  className={`text-lg font-bold hover:text-[#00C365] transition-colors border-b border-gray-100 pb-2 ${
+                    item === "Internship" ? "text-[#00C365]" : "text-black"
                   }`}
                 >
                   {item}

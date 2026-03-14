@@ -19,7 +19,7 @@ export default function InternshipPage() {
 
   return (
     <main className="bg-black text-white">
-      <Header />
+      <Header /> <br /><br />
       <HeroSection seatsLeft={seatsLeft} />
       
       <section className="px-4 py-16 bg-white text-black">
