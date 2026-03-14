@@ -12,12 +12,14 @@ import ProjectShowcase from '@/components/sections/project-showcase';
 import PricingSection from '@/components/sections/pricing';
 import EnrollmentForm from '@/components/sections/enrollment-form';
 import FinalCTA from '@/components/sections/final-cta';
+import Header from '@/components/header';
 
 export default function InternshipPage() {
   const [seatsLeft, setSeatsLeft] = useState(12);
 
   return (
     <main className="bg-black text-white">
+      <Header />
       <HeroSection seatsLeft={seatsLeft} />
       
       <section className="px-4 py-16 bg-white text-black">
