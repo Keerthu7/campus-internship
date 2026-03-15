@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
-export default function EnrollmentForm({ onSubmit }: { onSubmit: () => void }) {
+export default function EnrollmentForm({ onSubmit }: { onSubmit?: () => void }) {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -16,6 +16,7 @@ export default function EnrollmentForm({ onSubmit }: { onSubmit: () => void }) {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
@@ -24,50 +25,74 @@ export default function EnrollmentForm({ onSubmit }: { onSubmit: () => void }) {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    onSubmit();
+    setIsSubmitting(true);
     
-    setTimeout(() => {
-      setFormData({
-        fullName: '',
-        email: '',
-        phone: '',
-        collegeName: '',
-        yearOfStudy: '',
-        preferredDomain: '',
-        experienceLevel: ''
+    try {
+      // Backend API-ah call pandrom
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
-      setSubmitted(false);
-    }, 3000);
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setSubmitted(true);
+        if (onSubmit) onSubmit();
+        
+        setTimeout(() => {
+          setFormData({
+            fullName: '',
+            email: '',
+            phone: '',
+            collegeName: '',
+            yearOfStudy: '',
+            preferredDomain: '',
+            experienceLevel: ''
+          });
+          setSubmitted(false);
+        }, 3000);
+      } else {
+        alert("Failed to send application. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Something went wrong! Please check your internet connection.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section id="enrollment-form" className="px-4 py-16">
+    <section id="enrollment-form" className="px-4 py-16 bg-white">
       <div className="max-w-2xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-1 sm:mb-2">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black text-center mb-1 sm:mb-2">
           Apply for the Internship
         </h2>
-        <p className="text-center text-xs sm:text-sm md:text-base text-gray-400 mb-6 sm:mb-8">
+        <p className="text-center text-xs sm:text-sm md:text-base text-gray-600 mb-6 sm:mb-8">
           Fill in your details below and let's start your journey
         </p>
 
-        <Card className="bg-gray-950 border-gray-800 p-6 sm:p-8">
+        <Card className="bg-white border-gray-200 shadow-sm p-6 sm:p-8">
           {submitted ? (
             <div className="text-center space-y-3 sm:space-y-4 py-8 sm:py-12">
-              <div className="text-3xl sm:text-5xl mb-2 sm:mb-4">✓</div>
-              <h3 className="text-lg sm:text-2xl font-bold text-white">
+              <div className="text-3xl sm:text-5xl mb-2 sm:mb-4 text-[#00C365]">✓</div>
+              <h3 className="text-lg sm:text-2xl font-bold text-black">
                 Thank You for Applying!
               </h3>
-              <p className="text-xs sm:text-sm md:text-base text-gray-400">
+              <p className="text-xs sm:text-sm md:text-base text-gray-600">
                 Our team will review your application and contact you shortly.
               </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                   Full Name
                 </label>
                 <input
@@ -76,14 +101,14 @@ export default function EnrollmentForm({ onSubmit }: { onSubmit: () => void }) {
                   value={formData.fullName}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900 border border-gray-800 rounded-lg text-white placeholder-gray-600 focus:border-gray-700 outline-none transition-colors"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-50 border border-gray-300 rounded-lg text-black placeholder-gray-400 focus:border-black outline-none transition-colors"
                   placeholder="Your full name"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                     Email Address
                   </label>
                   <input
@@ -92,12 +117,12 @@ export default function EnrollmentForm({ onSubmit }: { onSubmit: () => void }) {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900 border border-gray-800 rounded-lg text-white placeholder-gray-600 focus:border-gray-700 outline-none transition-colors"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-50 border border-gray-300 rounded-lg text-black placeholder-gray-400 focus:border-black outline-none transition-colors"
                     placeholder="your@email.com"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                     Phone Number
                   </label>
                   <input
@@ -106,7 +131,7 @@ export default function EnrollmentForm({ onSubmit }: { onSubmit: () => void }) {
                     value={formData.phone}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900 border border-gray-800 rounded-lg text-white placeholder-gray-600 focus:border-gray-700 outline-none transition-colors"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-50 border border-gray-300 rounded-lg text-black placeholder-gray-400 focus:border-black outline-none transition-colors"
                     placeholder="+91 98765 43210"
                   />
                 </div>
@@ -114,7 +139,7 @@ export default function EnrollmentForm({ onSubmit }: { onSubmit: () => void }) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                     College Name
                   </label>
                   <input
@@ -123,12 +148,12 @@ export default function EnrollmentForm({ onSubmit }: { onSubmit: () => void }) {
                     value={formData.collegeName}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900 border border-gray-800 rounded-lg text-white placeholder-gray-600 focus:border-gray-700 outline-none transition-colors"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-50 border border-gray-300 rounded-lg text-black placeholder-gray-400 focus:border-black outline-none transition-colors"
                     placeholder="Your college/university"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                     Year of Study
                   </label>
                   <input
@@ -137,7 +162,7 @@ export default function EnrollmentForm({ onSubmit }: { onSubmit: () => void }) {
                     value={formData.yearOfStudy}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900 border border-gray-800 rounded-lg text-white placeholder-gray-600 focus:border-gray-700 outline-none transition-colors"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-50 border border-gray-300 rounded-lg text-black placeholder-gray-400 focus:border-black outline-none transition-colors"
                     placeholder="1st Year / 2nd Year / etc"
                   />
                 </div>
@@ -145,7 +170,7 @@ export default function EnrollmentForm({ onSubmit }: { onSubmit: () => void }) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                     Preferred Domain
                   </label>
                   <select
@@ -153,7 +178,7 @@ export default function EnrollmentForm({ onSubmit }: { onSubmit: () => void }) {
                     value={formData.preferredDomain}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900 border border-gray-800 rounded-lg text-white focus:border-gray-700 outline-none transition-colors"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-50 border border-gray-300 rounded-lg text-black focus:border-black outline-none transition-colors"
                   >
                     <option value="">Select a domain</option>
                     <option value="fullstack">Full Stack Development</option>
@@ -162,7 +187,7 @@ export default function EnrollmentForm({ onSubmit }: { onSubmit: () => void }) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                     Experience Level
                   </label>
                   <select
@@ -170,7 +195,7 @@ export default function EnrollmentForm({ onSubmit }: { onSubmit: () => void }) {
                     value={formData.experienceLevel}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900 border border-gray-800 rounded-lg text-white focus:border-gray-700 outline-none transition-colors"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-50 border border-gray-300 rounded-lg text-black focus:border-black outline-none transition-colors"
                   >
                     <option value="">Select level</option>
                     <option value="beginner">Beginner</option>
@@ -181,9 +206,10 @@ export default function EnrollmentForm({ onSubmit }: { onSubmit: () => void }) {
 
               <Button
                 type="submit"
-                className="w-full bg-white text-black hover:bg-gray-200 font-semibold text-sm sm:text-base py-2.5 sm:py-3"
+                disabled={isSubmitting}
+                className="w-full bg-black text-white hover:bg-gray-800 disabled:opacity-70 font-semibold text-sm sm:text-base py-2.5 sm:py-3 transition-colors"
               >
-                Apply for Internship
+                {isSubmitting ? 'Sending Application...' : 'Apply for Internship'}
               </Button>
             </form>
           )}
