@@ -9,7 +9,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   
-  // Last-la irukka slash '/' ah remove panniten, illaina double slash aagidum links-la
+ 
   const mainSiteUrl = "https://hynox-lake.vercel.app";
   
   useEffect(() => {
