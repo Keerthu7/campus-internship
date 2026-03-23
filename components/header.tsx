@@ -10,7 +10,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   
  
-  const mainSiteUrl = "https://hynox-lake.vercel.app";
+  const mainSiteUrl = "https://hynox-lake.vercel.app/";
   
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +30,7 @@ export default function Header() {
     if (item === "About") return `${mainSiteUrl}/about`;
     if (item === "Programs") return `${mainSiteUrl}/programs`;
     if (item === "Contact") return `${mainSiteUrl}/contact`;
+    if (item === "Workshop") return `${mainSiteUrl}/workshop`;
     if (item === "Internship") return "/"; // Internship site-laye irukkum
     return `/${item.toLowerCase()}`;
   };
@@ -73,6 +74,7 @@ export default function Header() {
             <Link href={`${mainSiteUrl}/about`} className="text-sm font-medium text-black hover:text-[#00C365] transition-colors">About</Link>
             <Link href={`${mainSiteUrl}/programs`} className="text-sm font-medium text-black hover:text-[#00C365] transition-colors">Programs</Link>
             <Link href="/" className="text-sm font-medium text-[#00C365] transition-colors">Internship</Link>
+            <Link href={`${mainSiteUrl}/workshop`} className="text-sm font-medium text-black hover:text-[#00C365] transition-colors">Workshop</Link>
             <Link href={`${mainSiteUrl}/contact`} className="text-sm font-medium text-black hover:text-[#00C365] transition-colors">Contact</Link>
           </nav>
 
