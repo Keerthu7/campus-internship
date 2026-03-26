@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     // Email content format
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: 'hello.hynox@gmail.com', // Intha mail ku thaan varum
+      to: 'hello.hynoxcampus@gmail.com', // Intha mail ku thaan varum
       subject: `New Internship Application from ${fullName}`,
       text: `
 Hello Hynox Team,
